@@ -300,6 +300,14 @@ def messages_destroy(message_id):
 
     return redirect(f"/users/{g.user.id}")
 
+##############################################################################
+# Likes
+
+@app.route('/messages/<int:message_id>/like')
+def like_unlike_message(message_id):
+
+    
+
 
 ##############################################################################
 # Homepage and error pages
@@ -312,11 +320,11 @@ def homepage():
     - anon users: no messages
     - logged in: 100 most recent messages of followed_users
     """
-
     if not g.user:
         return render_template('home-anon.html')
-    # TODO: set forms to have likes populated 
-   
+
+    form = LikeForm()
+
     # gets followers ids
     user_and_followers_ids = [user.id for user in g.user.following]
 

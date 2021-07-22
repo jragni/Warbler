@@ -68,19 +68,22 @@
               <!-- DEV TESTING -->
               <!-- Maybe instead of a form we redirect?  -->
               <!-- Like -->  
-                <form method="POST" 
-                      action="/">
-                  {{ form.hidden_tag() }}
+                
 
                   <!-- Liked messages -->
-                  {% if msg in g.user.liked_messages%}                
-                    <button class="btn fas fa-heart fa-lg" 
-                            style="position:relative; 
-                                    color:red; 
-                                    z-index:2">
-                
-                      
-                  {% else %}
+                  {% if msg in g.user.liked_messages%}
+                    <form method="POST" 
+                        action="/">
+                        {{ form.hidden_tag() }}
+                                      
+                          <button class="btn fas fa-heart fa-lg" 
+                                  style="position:relative; 
+                                          color:red; 
+                                          z-index:2">
+                    </form>
+                  {% elif msg.user.id != g.user.id %}
+                  <form method="POST" 
+                      action="/">
                   <!-- Unliked Messages -->
                     <button class="btn far fa-heart fa-lg" 
                             style="position:relative; 
