@@ -58,41 +58,28 @@
               <a href="/users/{{ msg.user.id }}">@{{ msg.user.username }}</a>
               <span class="text-muted">{{ msg.timestamp.strftime('%d %B %Y') }}</span>
               <p>{{ msg.text }}</p>
-                
-              <!-- for messages that user didn't create: show heart -->
-              <!-- if not liked: class "far" and no style": for black, outline heart -->
-              <!-- if liked: class "fas" and style "red": for red, solid heart -->
-              <!--i class="fas far fa-heart fa-lg" style="color:red"></i> -->
-              <!-- ICON must outside of the message area --- requires higher z-index  -->
+          
+              <form method="POST" 
+              action="/messages/{{msg.id}}/like">
+              {{ form.hidden_tag() }}
               
-              <!-- DEV TESTING -->
-              <!-- Maybe instead of a form we redirect?  -->
-              <!-- Like -->  
-                
-
                   <!-- Liked messages -->
                   {% if msg in g.user.liked_messages%}
-                    <form method="POST" 
-                        action="/">
-                        {{ form.hidden_tag() }}
-                                      
-                          <button class="btn fas fa-heart fa-lg" 
-                                  style="position:relative; 
-                                          color:red; 
-                                          z-index:2">
-                    </form>
+                      <button class="btn fas fa-heart fa-lg" 
+                              style="position:relative; 
+                                     color:red; 
+                                     z-index:999">
                   {% elif msg.user.id != g.user.id %}
-                  <form method="POST" 
-                      action="/">
                   <!-- Unliked Messages -->
-                    <button class="btn far fa-heart fa-lg" 
-                            style="position:relative; 
-                                  color:black; 
-                                  z-index:2">
-                    </button>
-                    {{form.is_liked(value=true)}}
+                      <button class="btn far fa-heart fa-lg" 
+                                  style="position:relative; 
+                                        color:black; 
+                                        z-index:999">
+                      </button>
                   {% endif %}
-                </form>
+                  
+                  </form>
+                  
               
               <!-- END DEV TESTING -->
 

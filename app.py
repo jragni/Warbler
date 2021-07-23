@@ -162,7 +162,6 @@ def show_following(user_id):
 def users_followers(user_id):
     """Show list of followers of this user."""
 
-    # pdb.set_trace()
     if not g.user:
         flash("Access unauthorized.", "danger")
         return redirect("/")
@@ -303,11 +302,35 @@ def messages_destroy(message_id):
 ##############################################################################
 # Likes
 
-@app.route('/messages/<int:message_id>/like')
+@app.route('/messages/<int:message_id>/like', methods=['POST'])
 def like_unlike_message(message_id):
 
-    
+    if not g.user:
+        flash("Access unauthorized.", "danger")
+        return redirect("/")
 
+    liked_message = Message.query.get(message_id)
+
+    if liked_message in g.user.liked_messages:
+        g.user.liked_messages.remove(liked_message)
+    
+    else:
+        g.user.liked_messages.append(liked_message)    
+
+    db.session.commit()
+    return redirect('/')
+
+
+
+@app.route('/users/<int:user_id>/likes', methods=['GET','POST'])
+def show_users_likes(user_id):
+    form = LikeForm()
+    if not g.user:
+        flash("Access unauthorized.", "danger")
+        return redirect("/")
+
+
+    return render_template('users/user_likes.html',form=form, user=g.user, messages=g.user.liked_messages)
 
 ##############################################################################
 # Homepage and error pages

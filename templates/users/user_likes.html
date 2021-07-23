@@ -68,9 +68,52 @@
       <p class="user-location"><span class="fa fa-map-marker"></span> {{ user.location }}</p>
     </div>
 
-    {% block user_details %}
-    {% endblock %}
-
-  </div>
+    <!-- User's liked Messages -->
+    <div class="col-sm-6">
+      <ul class="list-group" id="messages">
+  
+        {% for message in user.liked_messages %}
+  
+          <li class="list-group-item">
+            <a href="/messages/{{ message.id }}" class="message-link"></a>
+  
+            <a href="/users/{{ message.user_id }}">
+              <img src="{{ message.user.image_url }}" alt="user image" class="timeline-image">
+            </a>
+  
+            <div class="message-area">
+              <a href="/users/{{ message.user.id }}">@{{ message.user.username }}</a>
+              <span class="text-muted">
+                {{ message.timestamp.strftime('%d %B %Y') }}
+              </span>
+              <p>{{ message.text }}</p>
+              <!-- Likes -->
+                <form method="POST" 
+                action="/messages/{{message.id}}/like">
+                {{ form.hidden_tag() }}
+                
+                    <!-- Liked messages -->
+                    {% if message in g.user.liked_messages%}
+                        <button class="btn fas fa-heart fa-lg" 
+                                style="position:relative; 
+                                      color:red; 
+                                      z-index:999">
+                    {% elif message.user.id != g.user.id %}
+                    <!-- Unliked Messages -->
+                        <button class="btn far fa-heart fa-lg" 
+                                    style="position:relative; 
+                                          color:black; 
+                                          z-index:999">
+                        </button>
+                    {% endif %}
+                    
+                  </form>
+            </div>
+          </li>
+  
+        {% endfor %}
+  
+      </ul>
+    </div>
 
 {% endblock %}
